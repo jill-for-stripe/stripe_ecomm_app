@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+    <script>
+      var stripe = Stripe('pk_test_4bImMFe0rGRM94tASYW9URAd00jdOAyAVU');
+      var elements = stripe.elements();
+      stripe.redirectToCheckout({
+        sessionId:'<%=session_id%>'
+      }).then(function (result) {
+      });
+    </script>
+	</body>
+</html>

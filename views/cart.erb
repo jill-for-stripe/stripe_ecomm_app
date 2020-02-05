@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Cart</title>
+  	<h1>Cart</h1>
+  </head>
+  <body>
+    <table id="p-table">
+  	<% cart.each do |product_id, quantity| %>
+      <p>
+        <tr>
+          <td>
+            <div class="p-cell">
+            <div class="p-name"><%=products[product_id].name%></div>
+            <div class="p-quantity">Quantity: <%=quantity%></div>
+            <div class="p-price">$<%=(products[product_id].price.to_i*quantity)%>.00</div>
+            <form method="post" action="/removeFromCart">
+              <input type="hidden" name="product_id" value=<%=product_id%> >
+              <input class='btn btn-primary' type='submit' value='Remove'>
+            </form>
+            </div>
+          </td>
+        </tr>
+      </p>
+    <% end %>
+    </table>
+    <h4>Total: $<%=subtotal%>.00</h4>
+    <form method="post" action="/goToCheckout">
+        <input class='btn btn-primary' type='submit' value='Checkout'>
+    </form>
+	</body>
+</html>

@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Home</title>
+  	<h1>Abbey Road Vinyl</h1>
+  </head>
+  <body>
+  	<table id="p-table">
+  		<% products.each do |product_id, product| %>
+    		<td>
+          <div class="p-cell">
+            <img class="p-img" src=<%=product.image_url%> height="300" width="300"/>
+            <div class="p-name"><%=product.name%></div>
+            <div class="p-price">$<%=product.price%></div>
+            <form method="post" action="/addToCart">
+      		    <input type="hidden" name="product_id" value=<%=product_id%> >
+      		    <input class='btn btn-primary' type='submit' value='Add to Cart'>
+  		      </form>
+          </div>
+        </td>
+      <% end %>
+	   </table>
+	 <form method="post" action="/goToCart">
+      <input class='btn btn-primary' type='submit' value='Go to Cart'>
+	 </form>
+	</body>
+</html>
