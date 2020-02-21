@@ -3,6 +3,8 @@ require 'sinatra/reloader'
 require 'stripe'
 require 'json'
 
+require_relative 'models/album'
+
 # global hash representation of the available products, where the product ID is the key and an Album is the value
 $products = Hash.new
 
@@ -25,17 +27,6 @@ Stripe.api_key = 'sk_test_o20UzauzBU7uIE2G7CoaMA3q00T3v4QoUU'
 $success_url = 'http://localhost:4567/success?session_id={CHECKOUT_SESSION_ID}'
 $cancel_url = 'http://localhost:4567/cart'
 
-# simple class to hold product data where the product is an Album object
-class Album
-	attr_reader :name
-	attr_reader :price
-	attr_reader :image_url
-	def initialize(name, price, image_url)
-		@name = name
-		@price = price
-		@image_url = image_url
-	end
-end
 
 # returns JSON product data from Products API resource
 def parse_products
