@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'stripe'
 require 'json'
+require 'money'
 
 require_relative 'models/album'
 
@@ -17,8 +18,8 @@ $charge = nil
 # global variable to store the session id once the session is created
 $session_id = nil
 
-# subtotal of items in the cart (stored as string)
-$subtotal = "0"
+# subtotal of items in the cart
+$subtotal = Money.new(0, "USD")
 
 # set Stripe API key
 Stripe.api_key = 'sk_test_o20UzauzBU7uIE2G7CoaMA3q00T3v4QoUU'
@@ -34,7 +35,7 @@ get '/' do
 end
 
 get '/cart' do
-	erb :cart, :locals => {:cart => $cart, :products => $products, :subtotal => $subtotal}
+	erb :cart, :locals => {:cart => $cart, :products => $products, :subtotal => $subtotal.cents / 100}
 end
 
 get '/checkout' do
@@ -45,21 +46,19 @@ end
 
 get '/success' do
   charge_id = get_charge_id
-	erb :success, :locals => {:charge_id => charge_id, :subtotal => $subtotal}
+	erb :success, :locals => {:charge_id => charge_id, :subtotal => $subtotal.cents / 100}
 end
 
 
 post '/addToCart' do
     $cart[params[:product_id]] += 1
-    newsub = $subtotal.to_i + $products[params[:product_id]].price.to_i
-    $subtotal = newsub.to_s
+    $subtotal += Money.new($products[params[:product_id]].price.to_i * 100, "USD")
     redirect '/'
 end
 
 post '/removeFromCart' do
     $cart[params[:product_id]] -= 1
-    newsub = $subtotal.to_i - $products[params[:product_id]].price.to_i
-    $subtotal = newsub.to_s
+    $subtotal -= Money.new($products[params[:product_id]].price.to_i * 100, "USD")
     $cart.delete(params[:product_id]) if $cart[params[:product_id]] < 1
     redirect '/cart'
 end
@@ -112,19 +111,16 @@ helpers do
 
   #function to get 5 most recent charges and look to match to session on payment intent. NOTE: see README to see how I would use webhooks instead
   def get_charge_id  
-    charge_id = nil
     if $session_id != nil
       session = Stripe::Checkout::Session.retrieve($session_id)
       charge_list = Stripe::Charge.list({limit: 5})
       charge_list["data"].each do |charge|
         if charge["payment_intent"] == session["payment_intent"] && charge["status"] == "succeeded"
-          charge_id = charge["id"]
-          break
+          return charge["id"]
         end
       end
     end
-    puts "charge_id not found" if charge_id == nil
-    charge_id
   end
+
 end
 

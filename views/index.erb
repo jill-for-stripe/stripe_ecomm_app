@@ -10,7 +10,7 @@
           <div class="p-cell">
             <img class="p-img" src=<%=product.image_url%> height="300" width="300"/>
             <div class="p-name"><%=product.name%></div>
-            <div class="p-price">$<%=product.price%></div>
+            <div class="p-price">$<%="%.2f" % product.price.to_f%></div>
             <form method="post" action="/addToCart">
       		    <input type="hidden" name="product_id" value=<%=product_id%> >
       		    <input class='btn btn-primary' type='submit' value='Add to Cart'>

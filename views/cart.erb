@@ -12,7 +12,7 @@
             <div class="p-cell">
             <div class="p-name"><%=products[product_id].name%></div>
             <div class="p-quantity">Quantity: <%=quantity%></div>
-            <div class="p-price">$<%=(products[product_id].price.to_i*quantity)%>.00</div>
+            <div class="p-price">$<%="%.2f" % (products[product_id].price.to_i * quantity).to_f%></div>
             <form method="post" action="/removeFromCart">
               <input type="hidden" name="product_id" value=<%=product_id%> >
               <input class='btn btn-primary' type='submit' value='Remove'>
@@ -23,7 +23,7 @@
       </p>
     <% end %>
     </table>
-    <h4>Total: $<%=subtotal%>.00</h4>
+    <h4>Total: $<%="%.2f" % subtotal.to_f %></h4>
     <form method="post" action="/goToCheckout">
         <input class='btn btn-primary' type='submit' value='Checkout'>
     </form>
