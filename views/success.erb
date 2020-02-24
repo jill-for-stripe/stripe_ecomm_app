@@ -4,7 +4,7 @@
     <h1>Thank you for your purchase!</h1>
   </head>
   <body>
-		Amount Charged: $<%=subtotal%>.00
+		Amount Charged: $<%="%.2f" % subtotal.to_f%>
 		<br />
 		Charge ID: <%=charge_id%>
 	</body>
