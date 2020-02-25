@@ -6,7 +6,6 @@
   <body>
     <script>
       var stripe = Stripe('pk_test_4bImMFe0rGRM94tASYW9URAd00jdOAyAVU');
-      var elements = stripe.elements();
       stripe.redirectToCheckout({
         sessionId:'<%=session_id%>'
       }).then(function (result) {
