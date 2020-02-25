@@ -69,6 +69,35 @@ class Application < Sinatra::Base
       redirect '/checkout'
   end
 
+
+  post '/webhook' do
+	  payload = request.body.read
+	  event = nil
+
+	  begin
+	    event = Stripe::Event.construct_from(
+	      JSON.parse(payload, symbolize_names: true)
+	    )
+	  rescue JSON::ParserError => e
+	    # Invalid payload
+	    status 400
+	    return
+	  end
+
+	  case event.type
+	  when 'charge.succeeded'
+	    charge = event.data.object
+	    @@charge_id = charge.id
+	  else
+	    # Unexpected event type
+	    status 400
+	    return
+	  end
+	  status 200
+	end
+
+
+
   helpers do
     include Helpers
   end

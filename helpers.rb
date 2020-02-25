@@ -47,4 +47,9 @@ module Helpers
     end
   end
 
+
+def handle_charge_succeeded(charge)
+  charge.id
+end
+
 end
