@@ -7,6 +7,10 @@ Abbey Road Vinyl is an online store that sells classic rock albums on vinyl.
 * View cart and subtotal (for simplicity, this web app assumes no tax or shipping cost)
 * Complete checkout on Stripe-hosted [Checkout](https://stripe.com/docs/payments/checkout) page
 
+### How To Run
+* Run on `localhost:9292` by calling `rackup` from the command line
+* To run on a different port, call `rackup -p` with the correct port number. Make sure to edit `$success_url` and `$cancel_url` in app.rb if running on different port.
+
 ### Stripe APIs
 The application uses the following APIs:
 
@@ -29,7 +33,7 @@ The first thing I did in approaching this project was to familiarize myself with
 
 Next, I considered the functionality that the application would need to have. As a baseline, it would need to display products and allow users to add products to a cart. The ability to add items to a cart implied the requirement to be able to remove items from a cart. Users would need to be able to navigate to the cart and to checkout, and the application would need to display how much they were going to be charged for a purchase, allow them to complete the purchase, and confirm to them that the purchase was successful. I reviewed Stripe's documentation on options for the checkout process, and determined that the Stripe-hosted [Checkout](https://stripe.com/docs/payments/checkout) feature would provide the most functional checkout page with the least amount of effort.
 
-Once I had a framework for the project in mind, I set up my file structure for the Sinatra application. I created app.rb (server file) along with a Gemfile and a views folder containing four empty embedded Ruby (ERB) files for the index page, cart page, checkout, and confirmation page. In my server file, I created routes for each of the four views. As I worked through adding functionality to each page, I separated processes into functions to keep the blocks of the routes as simple and easy-to-follow as possible. I created a simple Class (`Album`) that held information about the product I was selling, and defined objects that were used in multiple areas throughout the program as global variables. Meanwhile, I kept the application running on `localhost:4567` to test the functionality as each piece was added in.
+Once I had a framework for the project in mind, I set up my file structure for the Sinatra application. I created app.rb (server file) along with a Gemfile and a views folder containing four empty embedded Ruby (ERB) files for the index page, cart page, checkout, and confirmation page. In my server file, I created routes for each of the four views. As I worked through adding functionality to each page, I separated processes into functions to keep the blocks of the routes as simple and easy-to-follow as possible. I created a simple Class (`Album`) that held information about the product I was selling, and defined objects that were used in multiple areas throughout the program as global variables. Meanwhile, I kept the application running on `localhost` to test the functionality as each piece was added in.
 
 ## Why Ruby/Sinatra?
 ### Ruby
