@@ -9,11 +9,12 @@ require_relative 'helpers.rb'
 
 class Application < Sinatra::Base
   
+  @@cart = Hash.new(0)
+  @@subtotal = Money.new(0, "USD")
+  @@session_id = nil
+
   def initialize
     @products = create_album_hash(parse_products)
-    @@cart = Hash.new(0)
-    @@subtotal = Money.new(0, "USD")
-    @@session_id = nil
     super
   end
 
